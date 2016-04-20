@@ -11,5 +11,7 @@ public class Storage extends HashMap<Integer, Product>{
         
     }
     
-    
+    public void sort(){
+        
+    }
 }
