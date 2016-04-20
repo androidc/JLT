@@ -7,6 +7,7 @@ import java.util.*;
 public class Storage extends HashMap<Integer, Product>{
     public static int count;
     
+    
     public Storage(){
         count++;
     }
@@ -15,9 +16,16 @@ public class Storage extends HashMap<Integer, Product>{
         put(count, product);
     }
     
-    public Product get(int id){         // вычитать количество из общей кучи товара
+    public Product get(int id, int quantity){         // вычитать количество из общей кучи товара
+        Product product = get(id);
+        if (product.getQuantity() >= quantity){
+            product.setQuantity(product.getQuantity() - quantity);
+            
+        }
+        else
+            return null;
         
-        return null;
+        return product;
     }
     
     public void sort(){
