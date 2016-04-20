@@ -9,23 +9,23 @@ public class Storage extends HashMap<Integer, Product>{
     
     
     public Storage(){
-        count++;
+        
     }
     
     public void add(Product product){
-        put(count, product);
+        put(count++, product);
     }
     
-    public Product get(int id, int quantity){         // вычитать количество из общей кучи товара
-        Product product = get(id);
+    public void get(int id, int quantity){         // вычитать количество из общей кучи товара
+        Product product = (Product) get(id);
         if (product.getQuantity() >= quantity){
             product.setQuantity(product.getQuantity() - quantity);
-            
         }
-        else
-            return null;
-        
-        return product;
+        if (product.getQuantity() <= 0) remove(id);
+    }
+    
+    public void get(Product product, int quantity){
+        //Product product = get(product);
     }
     
     public void sort(){
