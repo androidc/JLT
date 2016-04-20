@@ -7,6 +7,7 @@ import java.util.*;
 public class Storage extends HashMap<Integer, Product>{
     public static int count;
     
+    
     public Storage(){
         count++;
     }
