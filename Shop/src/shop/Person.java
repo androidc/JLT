@@ -24,6 +24,5 @@ public abstract class Person implements FullPowers{
         return name;
     }
     
-    
-    
+        
 }
