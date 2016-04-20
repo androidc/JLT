@@ -1,6 +1,6 @@
 package shop;
 
-public abstract class Person {
+public abstract class Person implements FullPowers{
     private String name;
     
     
@@ -9,6 +9,12 @@ public abstract class Person {
         
         
     }
+    
+    public Person(String name){
+        this.name = name;
+    }
+    
+    
     
     public void setName(String name){
         this.name = name;
