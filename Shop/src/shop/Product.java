@@ -1,12 +1,14 @@
 package shop;
 
+// Класс товар.
+
 public class Product {
     
-    private String name;
-    private int price;
-    private String code;
-    private String unit;
-    private int quantity;
+    private String name;        // Наименование
+    private int price;          // Цена
+    private String code;        // Артикул (Можно использовать как id)
+    private String unit;        // Единица измерения
+    private int quantity;       // Количество
     
     
     public Product(){

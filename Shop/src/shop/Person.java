@@ -2,15 +2,19 @@ package shop;
 
 import java.util.Date;
 
+// Класс Персона.
+
+
 public class Person{
+    
     public static enum Level {ADMINISTRATOR, MAIN_OPERATOR, OPERATOR, CUSTOMER, PROVIDER};
-    
-    
-    private String firstName, lastName;
-    private Date birthday;
-    private String address;
-    private String phoneNumber;
-    private Level lvl;
+        
+        
+    private String firstName, lastName;         // Имя, фамилия
+    private Date birthday;                      // Дата рождения
+    private String address;                     // Адрес
+    private String phoneNumber;                 // Телефон
+    private Level lvl;                          // Уровень доступа к БД, определяется Правами доступа
     
     
     public Person(){

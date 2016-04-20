@@ -1,10 +1,15 @@
 package shop;
 
-public class Storage {
+import java.util.*;
 
-    public static void main(String[] args) {
-        
+// Класс склад. Представлен в виде коллекции HashMap<id, Товар>
+
+public class Storage extends HashMap<Integer, Product>{
+    
+    
+    public Storage(){
         
     }
+    
     
 }
