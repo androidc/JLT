@@ -43,7 +43,11 @@ import static javax.management.Query.value;
  * @author Den
  */
 public class TestFX extends Application {
+
     private final ObservableList<Product> data = FXCollections.observableArrayList(new Product("Water", 100, "in", 351, "101010"), new Product("Plum", 500, "in", 57, "7856"));
+
+    
+
     private Button addButton, moveButton, closeButton, saveButton, cancelButton;
     
     @Override
