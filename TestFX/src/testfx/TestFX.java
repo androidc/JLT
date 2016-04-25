@@ -16,25 +16,35 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import static javax.management.Query.value;
 
 /**
  *
  * @author Den
  */
 public class TestFX extends Application {
-    private ObservableList<String> data = FXCollections.observableArrayList("1", "Name", "3");
-    
+    private final ObservableList<Product> data = FXCollections.observableArrayList(new Product("Water", 100, "in", 351, "101010"), new Product("Plum", 500, "in", 57, "7856"));
+    private Button addButton, moveButton, closeButton, saveButton, cancelButton;
     
     @Override
     public void start(Stage primaryStage) {
@@ -61,19 +71,35 @@ public class TestFX extends Application {
         Label productsList = new Label("Products list");
         grid.add(productsList, 0, 2);
         
-        TableView<String> table = new TableView<>();
+        TableView<Product> table = new TableView<>();
         table.setEditable(false);
-        table.getColumns().addAll(new TableColumn("№")
-                , new TableColumn("Name")
-                , new TableColumn("Item")
-                , new TableColumn("Quantity"));
+        TableColumn numberColumn = new TableColumn("№");
+        TableColumn nameColumn = new TableColumn("Name");
+        TableColumn unitColumn = new TableColumn("Unit");
+        TableColumn quantityColumn = new TableColumn("Quantity");
+        
+        
+        numberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        unitColumn.setCellValueFactory(new PropertyValueFactory<>("unit"));
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        
+        table.setEditable(true);
+        table.getColumns().addAll(numberColumn
+                                , nameColumn
+                                , unitColumn
+                                , quantityColumn);
         //table.autosize();
         //table.setMaxHeight(200);
+        
+        
+        //data.add("COOL");
         table.setItems(data);
-        data.add("COOL");
+        //table.setUserData(data);
         
-        
+                
         grid.add(table, 0, 3, 2, 3);
+        
         
         Label singleProduct = new Label("Product");
         grid.add(singleProduct, 2, 2);
@@ -88,22 +114,41 @@ public class TestFX extends Application {
         
         
         
-        Button addButton = new Button("Add product");
+        EventHandler event = new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent ae){
+                
+                if (ae.getSource() == addButton){
+                    
+                    System.out.println("ADD");
+                    editWindow(primaryStage);
+                }
+                if (ae.getSource() == moveButton){
+                    System.out.println("MOVE");
+                    
+                }
+                if (ae.getSource() == closeButton){
+                    Alert exit = new Alert(Alert.AlertType.CONFIRMATION, "", ButtonType.YES, ButtonType.NO);
+                    exit.setHeaderText("The program will be closed.");
+                    exit.setContentText("Are you sure?");
+                    
+                    if (exit.showAndWait().get() == ButtonType.YES) System.exit(0);
+                }
+            }
+        };
+        
+        addButton = new Button("Add product");
+        addButton.setOnAction(event);
         GridPane.setValignment(addButton, VPos.BOTTOM);
         grid.add(addButton, 2, 5);
         
-        Button moveButton = new Button("Move product");
+        moveButton = new Button("Move product");
+        moveButton.setOnAction(event);
         GridPane.setValignment(moveButton, VPos.BOTTOM);
         grid.add(moveButton, 3, 5);
         
-        Button closeButton = new Button("Close");
-        closeButton.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent ae){
-                System.exit(0);
-            }
-        
-        });
+        closeButton = new Button("Close");
+        closeButton.setOnAction(event);
         GridPane.setValignment(closeButton, VPos.BOTTOM);
         grid.add(closeButton, 4, 5);
         
@@ -115,37 +160,87 @@ public class TestFX extends Application {
         
         primaryStage.show();
         
-        /*
-        Button btn = new Button();
-        Label label = new Label();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
-        
-        
-        
-        StackPane root = new StackPane();
-        //root.setLayoutX(100);
-        //root.relocate(10, 100);
-        root.getChildren().addAll(btn, label);
-        //root.getChildren().add(label);
-        label.setText("COOL");
-        label.setRotate(45);
-        //label.set
-        
-        Scene scene = new Scene(root, 300, 250);
-        
-        primaryStage.setTitle("Hello World!");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        */
+    }
+    
+    private void editWindow(Stage primaryStage){
+        Stage editStage = new Stage();
+                    
+                    
+                    EventHandler choiser = new EventHandler<ActionEvent>(){
+                        @Override
+                        public void handle(ActionEvent ae){
+                            if (ae.getSource() == saveButton){
+                                System.out.println("SAVE");
+                                editStage.close();
+                            }
+                            if (ae.getSource() == cancelButton){
+                                System.out.println("CANCEL");
+                                editStage.close();
+                            }
+                        }
+                    };
+                    
+                    Label nameLabel = new Label("Product's name");
+                    TextField nameField = new TextField();
+                    
+                    Label codeLabel = new Label("Code");
+                    TextField codeField = new TextField();
+                    
+                    Label itemLabel = new Label("Item");
+                    TextField itemField = new TextField();
+                    
+                    Label quantityLabel = new Label("Quantity");
+                    TextField quantityField = new TextField();
+                    
+                    Label providerLabel = new Label("Provider");
+                    TextField providerField = new TextField();
+                    
+                    VBox verticalPane = new VBox();
+                    FlowPane buttonsPane = new FlowPane();
+                    
+                    verticalPane.setAlignment(Pos.CENTER_LEFT);
+                    buttonsPane.setAlignment(Pos.CENTER_RIGHT);
+                    
+                    verticalPane.setPadding(new Insets(20, 20, 20, 20));
+                    buttonsPane.setPadding(new Insets(20, 00, 00, 00));
+                    buttonsPane.setHgap(10);
+                    
+                    
+                    saveButton = new Button("Save");
+                    cancelButton = new Button("Cancel");
+                    
+                    //saveButton.set(new Insets(20, 20 ,0 ,0));
+                                        
+                    saveButton.setOnAction(choiser);
+                    cancelButton.setOnAction(choiser);
+                    
+                    
+                    buttonsPane.getChildren().addAll(saveButton, cancelButton);
+                    
+                    verticalPane.getChildren().addAll(nameLabel, nameField
+                                                    , codeLabel, codeField
+                                                    , itemLabel, itemField
+                                                    , quantityLabel, quantityField
+                                                    , providerLabel, providerField);
+                    
+                    
+                    verticalPane.getChildren().addAll(buttonsPane);
+                    
+                    
+                    
+                    Scene sceneEdit = new Scene(verticalPane);
+                    
+                    
+                    editStage.setScene(sceneEdit);
+                    editStage.initModality(Modality.WINDOW_MODAL);
+                    editStage.initOwner(primaryStage);
+                    primaryStage.toFront();
+                    editStage.setResizable(false);
+                    editStage.show();
     }
 
+    
+    
     /**
      * @param args the command line arguments
      */
