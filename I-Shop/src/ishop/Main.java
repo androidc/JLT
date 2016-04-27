@@ -35,7 +35,7 @@ import javafx.stage.StageStyle;
  * @author Den
  */
 public class Main extends Application {
-    private final String url = "jdbc:mysql://localhost:3306/shop";
+    private final String url = "jdbc:mysql://77.108.69.15:3306/shop";  // 77.108.69.15:3306
     private final String user = "admin";
     private final String password = "shop2016";
     private Product product;
@@ -184,6 +184,9 @@ public class Main extends Application {
                     Label codeLabel = new Label("Code");
                     TextField codeField = new TextField();
                     
+                    Label categoryLabel = new Label("Category");
+                    TextField categoryField = new TextField();
+                    
                     Label unitLabel = new Label("Item");
                     TextField unitField = new TextField();
                     
@@ -214,6 +217,7 @@ public class Main extends Application {
                                 product = new Product();
                                 product.setName(nameField.getText());
                                 product.setCode(codeField.getText());
+                                product.setIdCategory(Integer.parseInt(categoryField.getText()));
                                 product.setUnit(unitField.getText());
                                 product.setQuantity(Integer.parseInt(quantityField.getText()));
                                 product.setIdProvider(Integer.parseInt(providerField.getText()));
@@ -249,6 +253,7 @@ public class Main extends Application {
                     
                     verticalPane.getChildren().addAll(nameLabel, nameField
                                                     , codeLabel, codeField
+                                                    , categoryLabel, categoryField
                                                     , unitLabel, unitField
                                                     , quantityLabel, quantityField
                                                     , providerLabel, providerField);

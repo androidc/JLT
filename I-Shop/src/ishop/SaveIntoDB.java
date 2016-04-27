@@ -5,7 +5,7 @@ import java.sql.SQLException;
 public class SaveIntoDB extends ConnectToDB{
     //private final String table = "";
     private final String sendQuery = "INSERT INTO " + "product" + " SET idCategory = ?"
-                                                        + ", code = ?, name = ?, unit, = ?, quntity = ?"
+                                                        + ", code = ?, name = ?, unit = ?, quantity = ?"
                                                         + ", description = ?, idProvider = ?";
     
     public SaveIntoDB(){
