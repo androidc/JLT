@@ -11,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.*;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -35,12 +36,14 @@ import javafx.stage.StageStyle;
  * @author Den
  */
 public class Main extends Application {
-    private final String url = "jdbc:mysql://77.108.69.15:3306/shop";  // 77.108.69.15:3306
+    private final String url = //"jdbc:mysql://localhost:3306/shop";      
+                                "jdbc:mysql://77.108.69.15:3306/shop";
     private final String user = "admin";
     private final String password = "shop2016";
     private Product product;
 
-    private ObservableList<Product> data = FXCollections.observableArrayList(new Product("Water", 100, "in", 351, "101010"), new Product("Plum", 500, "in", 57, "7856"));
+    
+    private ObservableList<Product> data; // = FXCollections.observableArrayList();
 
     
 
@@ -49,7 +52,18 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         
-        loadDB();
+        //loadDB();
+        
+        LoadFromDB load = new LoadFromDB();
+        if (load.connectToDB(url, user, password) == null){
+            Alert error = new Alert(Alert.AlertType.ERROR, "", ButtonType.OK);
+            error.setTitle("Error");
+            error.setContentText("Error connecting to DB!");
+            error.showAndWait();
+        }
+        //load.loadData();
+        
+        data = FXCollections.observableArrayList(load.loadData());
         
         //data = FXCollections.observableArrayList();
         
@@ -85,7 +99,7 @@ public class Main extends Application {
         TableColumn quantityColumn = new TableColumn("Quantity");
         
         
-        numberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
+        numberColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         unitColumn.setCellValueFactory(new PropertyValueFactory<>("unit"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
@@ -173,107 +187,16 @@ public class Main extends Application {
     }
     
     private void editWindow(Stage primaryStage){
-        Stage editStage = new Stage();
-                    
-                    
-                    
-                    
-                    Label nameLabel = new Label("Product's name");
-                    TextField nameField = new TextField();
-                    
-                    Label codeLabel = new Label("Code");
-                    TextField codeField = new TextField();
-                    
-                    Label categoryLabel = new Label("Category");
-                    TextField categoryField = new TextField();
-                    
-                    Label unitLabel = new Label("Item");
-                    TextField unitField = new TextField();
-                    
-                    Label quantityLabel = new Label("Quantity");
-                    TextField quantityField = new TextField();
-                    
-                    Label providerLabel = new Label("Provider");
-                    TextField providerField = new TextField();
-                    
-                    VBox verticalPane = new VBox();
-                    FlowPane buttonsPane = new FlowPane();
-                    
-                    verticalPane.setAlignment(Pos.CENTER_LEFT);
-                    buttonsPane.setAlignment(Pos.CENTER_RIGHT);
-                    
-                    verticalPane.setPadding(new Insets(20, 20, 20, 20));
-                    buttonsPane.setPadding(new Insets(20, 00, 00, 00));
-                    buttonsPane.setHgap(10);
-                    
-                    verticalPane.setStyle("-fx-background: lightgray; -fx-font: normal 10pt TimesNewRoman");
-                    buttonsPane.setStyle("-fx-background: gray; -fx-font: italic 10pt TimesNewRoman");
-                    
-                    EventHandler choiser = new EventHandler<ActionEvent>(){
-                        @Override
-                        public void handle(ActionEvent ae){
-                            if (ae.getSource() == saveButton){
-                                System.out.println("SAVE");
-                                product = new Product();
-                                product.setName(nameField.getText());
-                                product.setCode(codeField.getText());
-                                product.setIdCategory(Integer.parseInt(categoryField.getText()));
-                                product.setUnit(unitField.getText());
-                                product.setQuantity(Integer.parseInt(quantityField.getText()));
-                                product.setIdProvider(Integer.parseInt(providerField.getText()));
-                                SaveIntoDB save = new SaveIntoDB();
-                                save.connectToDB(url, user, password);
-                                save.saveData(product);
-                                save.close();
-                                
-                                System.out.println(product.getName());
-                                
-                                data.add(product);
-                                
-                                editStage.close();
-                            }
-                            if (ae.getSource() == cancelButton){
-                                System.out.println("CANCEL");
-                                editStage.close();
-                            }
-                        }
-                    };
-                    
-                    saveButton = new Button("Save");
-                    //saveButton.setDefaultButton(true);
-                    cancelButton = new Button("Cancel");
-                    
-                    //saveButton.set(new Insets(20, 20 ,0 ,0));
-                                        
-                    saveButton.setOnAction(choiser);
-                    cancelButton.setOnAction(choiser);
-                    
-                    
-                    buttonsPane.getChildren().addAll(saveButton, cancelButton);
-                    
-                    verticalPane.getChildren().addAll(nameLabel, nameField
-                                                    , codeLabel, codeField
-                                                    , categoryLabel, categoryField
-                                                    , unitLabel, unitField
-                                                    , quantityLabel, quantityField
-                                                    , providerLabel, providerField);
-                    
-                    
-                    verticalPane.getChildren().addAll(buttonsPane);
-                    
-                    
-                    
-                    Scene sceneEdit = new Scene(verticalPane);
-                    
-                    
-                    
-                    
-                    editStage.setScene(sceneEdit);
-                    editStage.initModality(Modality.WINDOW_MODAL);
-                    editStage.initOwner(primaryStage);
-                    primaryStage.toFront();
-                    editStage.setResizable(false);
-                    editStage.show();
+        
+        product = EditWindow.getProductData();
+        if (product != null) {
+            data.add(product);
+            SaveIntoDB save = new SaveIntoDB();
+            save.connectToDB(url, user, password);
+            save.saveData(product);
+            save.close();
+        }
+        
     }
 
     
