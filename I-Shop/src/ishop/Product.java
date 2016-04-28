@@ -4,15 +4,15 @@ package ishop;
 
 public class Product {
     
-    private static int id = 0;             // Нужен ли? MySQL генерирует автоматически
-    private String name = "";        // Наименование
-    private int price = 0;          // Цена
-    private String code = "";        // Артикул (Можно использовать как id)
-    private String unit = "";        // Единица измерения
-    private int quantity = 0;       // Количество
-    private int idCategory = 0;     // ID катогории товара
-    private String description = ""; // Описание
-    private int idProvider = 0;     // ID поставщика
+    private int id;             // Нужен ли? MySQL генерирует автоматически
+    private String name;        // Наименование
+    private int price;          // Цена
+    private String code;        // Артикул (Можно использовать как id)
+    private String unit;        // Единица измерения
+    private int quantity;       // Количество
+    private int idCategory;     // ID катогории товара
+    private String description; // Описание
+    private int idProvider;     // ID поставщика
     
     public Product(){
         
@@ -93,13 +93,5 @@ public class Product {
     public int getIdProvider() {
         return idProvider;
     }
-
-//    public void setID(int id) {
-//        this.id = id;
-//    }
     
-    public int getID() {
-        return id++;
-    }
-
 }

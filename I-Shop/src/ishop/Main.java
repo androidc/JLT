@@ -11,7 +11,6 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.*;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -36,13 +35,12 @@ import javafx.stage.StageStyle;
  * @author Den
  */
 public class Main extends Application {
-    private final String url = "jdbc:mysql://localhost:3306/shop";      //"jdbc:mysql://77.108.69.15:3306/shop";
+    private final String url = "jdbc:mysql://77.108.69.15:3306/shop";  // 77.108.69.15:3306
     private final String user = "admin";
     private final String password = "shop2016";
     private Product product;
 
-    
-    private ObservableList<Product> data; // = FXCollections.observableArrayList();
+    private ObservableList<Product> data = FXCollections.observableArrayList(new Product("Water", 100, "in", 351, "101010"), new Product("Plum", 500, "in", 57, "7856"));
 
     
 
@@ -51,18 +49,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         
-        //loadDB();
-        
-        LoadFromDB load = new LoadFromDB();
-        if (load.connectToDB(url, user, password) == null){
-            Alert error = new Alert(Alert.AlertType.ERROR, "", ButtonType.OK);
-            error.setTitle("Error");
-            error.setContentText("Error connecting to DB!");
-            error.showAndWait();
-        }
-        //load.loadData();
-        
-        data = FXCollections.observableArrayList(load.loadData());
+        loadDB();
         
         //data = FXCollections.observableArrayList();
         
@@ -98,7 +85,7 @@ public class Main extends Application {
         TableColumn quantityColumn = new TableColumn("Quantity");
         
         
-        numberColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        numberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         unitColumn.setCellValueFactory(new PropertyValueFactory<>("unit"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
@@ -140,24 +127,7 @@ public class Main extends Application {
                 if (ae.getSource() == addButton){
                     
                     System.out.println("ADD");
-                    
-                    
-                    //editWindow(primaryStage);
-                    
-                    EditWindow editWindow = new EditWindow(primaryStage);
-//                    editWindow.initOwner(primaryStage);
-//                    primaryStage.toFront();
-                    editWindow.showAndWait();
-                    //
-                    //System.out.println("product");
-                    
-                    data.add(product = editWindow.getProduct());
-                    
-                    //editWindow.close();
-                    SaveIntoDB save = new SaveIntoDB();
-                    save.connectToDB(url, user, password);
-                    save.saveData(product);
-                    save.close();
+                    editWindow(primaryStage);
                 }
                 if (ae.getSource() == moveButton){
                     System.out.println("MOVE");
@@ -203,9 +173,6 @@ public class Main extends Application {
     }
     
     private void editWindow(Stage primaryStage){
-        
-        
-        /*
         Stage editStage = new Stage();
                     
                     
@@ -307,7 +274,6 @@ public class Main extends Application {
                     primaryStage.toFront();
                     editStage.setResizable(false);
                     editStage.show();
-                    */
     }
 
     
