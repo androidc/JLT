@@ -11,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.*;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -35,12 +36,13 @@ import javafx.stage.StageStyle;
  * @author Den
  */
 public class Main extends Application {
-    private final String url = "jdbc:mysql://77.108.69.15:3306/shop";  // 77.108.69.15:3306
+    private final String url = "jdbc:mysql://localhost:3306/shop";      //"jdbc:mysql://77.108.69.15:3306/shop";
     private final String user = "admin";
     private final String password = "shop2016";
     private Product product;
 
-    private ObservableList<Product> data = FXCollections.observableArrayList(new Product("Water", 100, "in", 351, "101010"), new Product("Plum", 500, "in", 57, "7856"));
+    
+    private ObservableList<Product> data; // = FXCollections.observableArrayList();
 
     
 
@@ -49,7 +51,18 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         
-        loadDB();
+        //loadDB();
+        
+        LoadFromDB load = new LoadFromDB();
+        if (load.connectToDB(url, user, password) == null){
+            Alert error = new Alert(Alert.AlertType.ERROR, "", ButtonType.OK);
+            error.setTitle("Error");
+            error.setContentText("Error connecting to DB!");
+            error.showAndWait();
+        }
+        //load.loadData();
+        
+        data = FXCollections.observableArrayList(load.loadData());
         
         //data = FXCollections.observableArrayList();
         
