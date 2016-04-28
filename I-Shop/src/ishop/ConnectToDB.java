@@ -26,17 +26,16 @@ public abstract class ConnectToDB {
     }
     
     public boolean close(){
-        if (connection != null){
+        
             try {
-               connection.close();
+                if (prStatement != null) prStatement.close();
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
             } catch (SQLException e) {
                e.printStackTrace();
                 return false;
             }
-        }
+        
         return true;
     }
-    
-    
-    
 }
