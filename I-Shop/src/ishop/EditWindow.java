@@ -99,12 +99,9 @@ public class EditWindow {
                     
         verticalPane.getChildren().addAll(buttonsPane);
                      
-        Scene sceneEdit = new Scene(verticalPane);
+        //Scene sceneEdit = new Scene(verticalPane);
                
-        window.setScene(sceneEdit);
-//                    editStage.initModality(Modality.WINDOW_MODAL);
-//                    editStage.initOwner(primaryStage);
-//                    primaryStage.toFront();
+        window.setScene(new Scene(verticalPane));
         window.setResizable(false);
         window.showAndWait();
         
