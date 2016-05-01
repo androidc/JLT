@@ -1,18 +1,31 @@
 package ishop;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class SaveIntoDB extends ConnectToDB{
+public class ProductsSaver{
+    private PreparedStatement prStatement = null;
+    //private ResultSet resultSet;
     //private final String table = "";
-    private final String sendQuery = "INSERT INTO " + "product" + " SET idCategory = ?"
+    private final String sendSaveQuery = "INSERT INTO " + "product" + " SET idCategory = ?"
                                                         + ", code = ?, name = ?, unit = ?, quantity = ?"
                                                         + ", description = ?, idProvider = ?";
     
-    public SaveIntoDB(){
+    private final String sendUpdateQuery = "UPDATE " + "product" + " SET idCategory = ?"
+                                                        + ", code = ?, name = ?, unit = ?, quantity = ?"
+                                                        + ", description = ?, idProvider = ?";
+    
+    private String sendQuery;
+    
+    
+    public ProductsSaver(){
         
     }
     
-    public void saveData(Product product){
+    public void saveData(Product product, Connection connection, String update){
+        if (update.equalsIgnoreCase("update")) sendQuery = sendUpdateQuery; else sendQuery = sendSaveQuery;
         if (connection != null){
             try{
                 prStatement = connection.prepareStatement(sendQuery);
@@ -26,7 +39,7 @@ public class SaveIntoDB extends ConnectToDB{
                 
                 prStatement.execute();
                 
-                System.out.println(resultSet);
+                //System.out.println(resultSet);
                 
             }catch(SQLException e){
                 e.printStackTrace();

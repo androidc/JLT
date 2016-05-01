@@ -18,7 +18,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class LoginWindow {
-    private String url = "jdbc:mysql://77.108.69.15:3306/shop",
+    private String url = "jdbc:mysql://localhost:3306/shop",
+                          //"jdbc:mysql://77.108.69.15:3306/shop",
                    user = "",
                    password = "";
     private boolean isLogin = false;        //  Переделать, это явная "дырка" в безопасности
@@ -56,7 +57,7 @@ public class LoginWindow {
             @Override
             public void handle(ActionEvent event) {
                 if (event.getSource() == okButton){
-                    if (new ConnectToDB().connect(url, loginField.getText(), passwordField.getText()) != null){
+                    if (DatabaseConnection.getConnection(url, loginField.getText(), passwordField.getText()) != null){
                         System.out.println("loggined!");
                         isLogin = true;
                         stage.close();

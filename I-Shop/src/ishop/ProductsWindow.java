@@ -36,7 +36,7 @@ public class ProductsWindow extends Stage{
     private Product product;
     private ObservableList<Product> productsData;
     private ObservableList<Provider> providersData;
-    private Button addButton, moveButton, closeButton;
+    private Button addButton, editButton, moveButton, closeButton;
     private Stage primaryStage;
     
     
@@ -53,20 +53,21 @@ public class ProductsWindow extends Stage{
         //cw.run();
         //cw.show();
         
-        LoadFromDB loadProducts = new LoadFromDB();
-        LoadFromDB_provider loadProviders = new LoadFromDB_provider();
+        ProductsLoader loadProducts = new ProductsLoader();
+        ProvidersLoader loadProviders = new ProvidersLoader();
         
-        if (loadProducts.connect(url, user, password) == null){
-            Alert error = new Alert(Alert.AlertType.ERROR, "", ButtonType.OK);
-            error.setTitle("Error");
-            error.setContentText("Error connecting to DB!");
-            error.showAndWait();
-        }
+//        if (loadProducts.connect(url, user, password) == null){
+//            Alert error = new Alert(Alert.AlertType.ERROR, "", ButtonType.OK);
+//            error.setTitle("Error");
+//            error.setContentText("Error connecting to DB!");
+//            error.showAndWait();
+//        }
         //cw.close();
         
-        productsData = FXCollections.observableArrayList(loadProducts.loadData());
-        loadProviders.connect(url, user, password);
-        providersData = FXCollections.observableArrayList(loadProviders.loadData());
+        productsData = FXCollections.observableArrayList(loadProducts.loadData(DatabaseConnection.getConnection()));
+//        loadProviders.connect(url, user, password);
+
+        providersData = FXCollections.observableArrayList(loadProviders.loadData(DatabaseConnection.getConnection()));
         
         
         
@@ -120,7 +121,7 @@ public class ProductsWindow extends Stage{
         
         ListView<Product> productView = new ListView<>();
         productView.setMaxHeight(150);
-        grid.add(productView, 2, 3, 3, 1);
+        grid.add(productView, 2, 3, 4, 1);
         
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -139,16 +140,26 @@ public class ProductsWindow extends Stage{
                 if (ae.getSource() == addButton){
                     //System.out.println("ADD");
                     //editWindow(primaryStage);
-                    product = EditWindow.getProductData(providersData);
+                    product = new EditWindow().editProductData(new Product(), providersData);
                     if (product != null) {
                         productsData.add(product);
-                        SaveIntoDB save = new SaveIntoDB();
-                        save.connect(url, user, password);
-                        save.saveData(product);
-                        save.close();
+                        ProductsSaver save = new ProductsSaver();
+                        //save.connect(url, user, password);
+                        save.saveData(product, DatabaseConnection.getConnection(), "add");
+                        //save.close();
                     }
                 }
-                
+                if (ae.getSource() == editButton){
+                    //System.out.println("Selected product - " + table.getSelectionModel().getSelectedItem());
+                    product = new EditWindow().editProductData(table.getSelectionModel().getSelectedItem(), providersData);
+                    if (product != null) {
+                        //productsData.add(product);
+                        ProductsSaver save = new ProductsSaver();
+                        //save.connect(url, user, password);
+                        save.saveData(product, DatabaseConnection.getConnection(), "update");
+                        //save.close();
+                    }
+                }
                 if (ae.getSource() == moveButton){
                     //System.out.println("MOVE");
                     //editWindow(primaryStage);  // - it's not good
@@ -160,7 +171,10 @@ public class ProductsWindow extends Stage{
                     exit.setContentText("Are you sure?");
                     //exit.initStyle(StageStyle.UTILITY);
                     //exit.getButtonTypes().add(ButtonType.YES.getButtonData(). );   // how make other default button???
-                    if (exit.showAndWait().get() == ButtonType.YES) System.exit(0);
+                    if (exit.showAndWait().get() == ButtonType.YES) {
+                        DatabaseConnection.close();
+                        System.exit(0);
+                    }
                 }
             }
         };
@@ -170,15 +184,20 @@ public class ProductsWindow extends Stage{
         GridPane.setValignment(addButton, VPos.BOTTOM);
         grid.add(addButton, 2, 5);
         
+        editButton = new Button("Edit product");
+        editButton.setOnAction(event);
+        GridPane.setValignment(editButton, VPos.BOTTOM);
+        grid.add(editButton, 3, 5);
+        
         moveButton = new Button("Move product");
         moveButton.setOnAction(event);
         GridPane.setValignment(moveButton, VPos.BOTTOM);
-        grid.add(moveButton, 3, 5);
+        grid.add(moveButton, 4, 5);
         
         closeButton = new Button("Close");
         closeButton.setOnAction(event);
         GridPane.setValignment(closeButton, VPos.BOTTOM);
-        grid.add(closeButton, 4, 5);
+        grid.add(closeButton, 5, 5);
         
         Scene scene = new Scene(grid, Color.BLUE); //, 300, 300);
         primaryStage.setScene(scene);

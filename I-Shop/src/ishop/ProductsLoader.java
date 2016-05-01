@@ -1,20 +1,26 @@
 package ishop;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
-public class LoadFromDB extends ConnectToDB{
+public class ProductsLoader implements Loadable{
+    private Statement statement;
+    private ResultSet resultSet;
     
     private final String sendQuery = "SELECT * FROM " + "product";
     
     
-    public LoadFromDB(){
+    public ProductsLoader(){
         
     }
     
     
-    public ArrayList<Product> loadData(){
+    @Override
+    public ArrayList<Product> loadData(Connection connection){
         ArrayList<Product> products = new ArrayList<>();
         if (connection != null){
             try{
@@ -39,10 +45,7 @@ public class LoadFromDB extends ConnectToDB{
                 e.printStackTrace();
                 return null;
             }
-            
         }
-        
         return products;
     }
-    
 }

@@ -20,32 +20,61 @@ import javafx.util.Callback;
 
 
 public class EditWindow {
-    private static Button saveButton, cancelButton;
-    private static Product product = new Product();
+    private TextField nameField, codeField, categoryField, unitField, quantityField;
+    private ComboBox providerField;
+    private Button saveButton, cancelButton;
+    //private Product product;
     
-    public static Product getProductData(ObservableList <Provider> providers){
+    
+    
+//    public Product getProductData(ObservableList <Provider> providers){
+//        
+//        product = new Product();
+//        init(providers);
+//        
+//        return product;
+//    }
+    
+    
+    public Product editProductData(Product product, ObservableList <Provider> providers){
         
+        if (product == null) product = new Product();
+        
+        init(product, providers);
+        
+        nameField.setText(product.getName());
+        codeField.setText(product.getCode());
+        categoryField.setText(String.valueOf(product.getIdCategory()));
+        unitField.setText(product.getUnit());
+        quantityField.setText(String.valueOf(product.getQuantity()));
+        providerField.setVisibleRowCount(0);
+        System.out.println("product name - " + product.getName());
+        return product;
+    }
+    
+    
+    private void init(Product product, ObservableList <Provider> providers){
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         
         Label nameLabel = new Label("Product's name");
-        TextField nameField = new TextField();
+        nameField = new TextField(product.getName());
 
         Label codeLabel = new Label("Code");
-        TextField codeField = new TextField();
+        codeField = new TextField(product.getCode());
 
         Label categoryLabel = new Label("Category");
-        TextField categoryField = new TextField();
+        categoryField = new TextField(String.valueOf(product.getIdCategory()));
 
         Label unitLabel = new Label("Item");
-        TextField unitField = new TextField();
+        unitField = new TextField(product.getUnit());
 
         Label quantityLabel = new Label("Quantity");
-        TextField quantityField = new TextField();
+        quantityField = new TextField(String.valueOf(product.getQuantity()));
 
         Label providerLabel = new Label("Provider");
         //TextField providerField = new TextField();
-        ComboBox providerField = new ComboBox();
+        providerField = new ComboBox();
         providerField.setItems(providers);
         
 //        providerField.setCellFactory(new Callback<ListView<Provider>, ListCell<Provider>>(){
@@ -82,6 +111,8 @@ public class EditWindow {
                 
             }
         });
+        providerField.getSelectionModel().select(product.getIdProvider());
+        
         
  
         
@@ -106,19 +137,19 @@ public class EditWindow {
             public void handle(ActionEvent ae){
                 if (ae.getSource() == saveButton){
                     System.out.println("SAVE");
-                    product = new Product();
+                    //product = new Product();
                     product.setName(nameField.getText());
                     product.setCode(codeField.getText());
                     product.setIdCategory(Integer.parseInt(categoryField.getText()));
                     product.setUnit(unitField.getText());
                     product.setQuantity(Integer.parseInt(quantityField.getText()));
-                    product.setIdProvider(Integer.parseInt(providerField.getSelectionModel().getSelectedItem().toString()));
+                    product.setIdProvider(providerField.getSelectionModel().getSelectedIndex());
                     
                     window.close();
                 }
                 if (ae.getSource() == cancelButton){
                     //System.out.println("CANCEL");
-                    product = null;
+                    //product = null;
                     window.close();
                 }
             }
@@ -150,8 +181,6 @@ public class EditWindow {
         window.setScene(new Scene(verticalPane));
         window.setResizable(false);
         window.showAndWait();
-        
-        return product;
     }
     
 }

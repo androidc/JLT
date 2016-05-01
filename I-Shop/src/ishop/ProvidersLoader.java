@@ -1,20 +1,27 @@
 package ishop;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
-public class LoadFromDB_provider extends ConnectToDB{
-    
+public class ProvidersLoader implements Loadable{
+    private Statement statement;
+    private ResultSet resultSet;
+    //protected PreparedStatement prStatement;
     
     private final String sendQuery = "SELECT * FROM " + "provider";
     
     
-    public LoadFromDB_provider(){
+    public ProvidersLoader(){
         
     }
     
     
-    public ArrayList<Provider> loadData(){
+    @Override
+    public ArrayList<Provider> loadData(Connection connection){
         ArrayList<Provider> providers = new ArrayList<>();
         if (connection != null){
             try{

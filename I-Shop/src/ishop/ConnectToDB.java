@@ -11,13 +11,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ConnectToDB {
-    protected Connection connection;
+    protected static Connection connection;
     protected Statement statement;
     protected PreparedStatement prStatement;
     protected ResultSet resultSet;
     ConnectingWindow cw = null;
     
-    public Connection connect(String url, String user, String password) {
+    public static Connection connect(String url, String user, String password) {
         
         
 //        Thread t = new Thread(){
