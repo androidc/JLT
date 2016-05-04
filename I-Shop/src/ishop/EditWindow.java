@@ -2,6 +2,7 @@ package ishop;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -71,7 +72,27 @@ public class EditWindow {
 
         Label categoryLabel = new Label("Category");
         categoryField = new ComboBox();                     //TextField(String.valueOf(product.getIdCategory()));
-        categoryField.setItems(null);
+        ObservableList productsCategory = FXCollections.observableArrayList(new ProductsCategoryLoader().loadData(DatabaseConnection.getConnection()));
+        categoryField.setItems(productsCategory);
+        categoryField.setPromptText("Choise products category");
+        categoryField.setEditable(true);
+        categoryField.setCellFactory(new Callback<ListView<ProductsCategory>, ListCell<ProductsCategory>>(){
+            @Override
+            public ListCell<ProductsCategory> call(ListView<ProductsCategory> param) {
+                return new ListCell<ProductsCategory>(){
+                    @Override
+                    public void updateItem(ProductsCategory item, boolean empty){
+                        if (item != null){
+                            setText(item.getName());
+                            setGraphic(null);
+                        }
+                    }
+                    
+                };
+            }
+            
+        });
+        
 
         Label unitLabel = new Label("Item");
         unitField = new TextField(product.getUnit());
@@ -98,18 +119,6 @@ public class EditWindow {
         //TextField providerField = new TextField();
         providerField = new ComboBox();
         providerField.setItems(providers);
-        
-//        providerField.setCellFactory(new Callback<ListView<Provider>, ListCell<Provider>>(){
-//            @Override
-//            public ListCell<Provider> call(ListView<Provider>() param){
-//                
-//                return new ListCell<Provider>(){
-//                    
-//                };
-//            }
-//        });
-
-        //providerField.getSelectionModel().selectFirst();
         
         providerField.setPromptText("Choise provider");
         providerField.setEditable(true);

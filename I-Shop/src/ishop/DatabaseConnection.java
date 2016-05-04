@@ -1,11 +1,8 @@
 package ishop;
 
-import static ishop.ConnectToDB.connection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.scene.control.Alert;
 
 public class DatabaseConnection {
