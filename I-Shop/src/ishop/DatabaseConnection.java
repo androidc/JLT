@@ -16,13 +16,14 @@ public class DatabaseConnection {
         try{
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(url, login, password);
-        }catch(SQLException | ClassNotFoundException e){
-            Alert errorWindow = new Alert(Alert.AlertType.ERROR, "Wrong login/password!");
+        }catch(SQLException| ClassNotFoundException e){
+            Alert errorWindow = new Alert(Alert.AlertType.ERROR, "Can't connected to DB!\n" + e.getMessage());
             errorWindow.showAndWait();
-            System.out.println("Can't connected to DB");
+            //System.out.println("Can't connected to DB. " + e.getMessage());
             //e.printStackTrace();
             return null;
-        }
+        } 
+                
         return connection;
     }
     
