@@ -57,6 +57,7 @@ public class LoginWindow {
             @Override
             public void handle(ActionEvent event) {
                 if (event.getSource() == okButton){
+                    
                     if (DatabaseConnection.getConnection(url, loginField.getText(), passwordField.getText()) != null){
                         System.out.println("loggined!");
                         isLogin = true;
@@ -66,6 +67,7 @@ public class LoginWindow {
                         System.out.println("Can't connecting to DB");
                         //System.exit(0);
                     }
+                    passwordField.clear();
                 }
                 if (event.getSource() == cancelButton){
                     System.exit(0);

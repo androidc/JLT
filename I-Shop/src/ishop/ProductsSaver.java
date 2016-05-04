@@ -11,11 +11,11 @@ public class ProductsSaver{
     //private final String table = "";
     private final String sendSaveQuery = "INSERT INTO " + "product" + " SET idCategory = ?"
                                                         + ", code = ?, name = ?, unit = ?, quantity = ?"
-                                                        + ", description = ?, idProvider = ?";
+                                                        + ", description = ?, idProvider = ?;";
     
     private final String sendUpdateQuery = "UPDATE " + "product" + " SET idCategory = ?"
                                                         + ", code = ?, name = ?, unit = ?, quantity = ?"
-                                                        + ", description = ?, idProvider = ?";
+                                                        + ", description = ?, idProvider = ? WHERE idProduct = ?;";
     
     private String sendQuery;
     
@@ -36,6 +36,7 @@ public class ProductsSaver{
                 prStatement.setInt(5, product.getQuantity());
                 prStatement.setString(6, product.getDescription());
                 prStatement.setInt(7, product.getIdProvider());
+                if (sendQuery.equals(sendUpdateQuery)) prStatement.setInt(8, product.getID());
                 
                 prStatement.execute();
                 

@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Alert;
 
 public class DatabaseConnection {
     private static Connection connection = null;
@@ -16,8 +17,10 @@ public class DatabaseConnection {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(url, login, password);
         }catch(SQLException | ClassNotFoundException e){
+            Alert errorWindow = new Alert(Alert.AlertType.ERROR, "Wrong login/password!");
+            errorWindow.showAndWait();
             System.out.println("Can't connected to DB");
-            e.printStackTrace();
+            //e.printStackTrace();
             return null;
         }
         return connection;

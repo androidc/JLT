@@ -1,7 +1,10 @@
 package ishop;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,10 +22,13 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 
+
 public class EditWindow {
-    private TextField nameField, codeField, categoryField, unitField, quantityField;
-    private ComboBox providerField;
+    private TextField nameField, codeField, unitField, quantityField;
+    private ComboBox categoryField, providerField;
     private Button saveButton, cancelButton;
+    
+    private boolean correct = false;
     //private Product product;
     
     
@@ -44,7 +50,7 @@ public class EditWindow {
         
         nameField.setText(product.getName());
         codeField.setText(product.getCode());
-        categoryField.setText(String.valueOf(product.getIdCategory()));
+        categoryField.setVisibleRowCount(0);             //setText(String.valueOf(product.getIdCategory()));
         unitField.setText(product.getUnit());
         quantityField.setText(String.valueOf(product.getQuantity()));
         providerField.setVisibleRowCount(0);
@@ -64,13 +70,29 @@ public class EditWindow {
         codeField = new TextField(product.getCode());
 
         Label categoryLabel = new Label("Category");
-        categoryField = new TextField(String.valueOf(product.getIdCategory()));
+        categoryField = new ComboBox();                     //TextField(String.valueOf(product.getIdCategory()));
+        categoryField.setItems(null);
 
         Label unitLabel = new Label("Item");
         unitField = new TextField(product.getUnit());
 
         Label quantityLabel = new Label("Quantity");
+        
         quantityField = new TextField(String.valueOf(product.getQuantity()));
+        quantityField.textProperty().addListener(new ChangeListener<String>(){
+            
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (isInteger(newValue)){
+                    quantityField.setStyle("-fx-text-fill: black");
+                    correct = true;
+                } else{
+                    quantityField.setStyle("-fx-text-fill: red");
+                    correct = false;
+                }
+            }
+            
+        });
 
         Label providerLabel = new Label("Provider");
         //TextField providerField = new TextField();
@@ -135,15 +157,15 @@ public class EditWindow {
         EventHandler choiser = new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent ae){
-                if (ae.getSource() == saveButton){
+                if (ae.getSource() == saveButton && correct){
                     System.out.println("SAVE");
                     //product = new Product();
                     product.setName(nameField.getText());
                     product.setCode(codeField.getText());
-                    product.setIdCategory(Integer.parseInt(categoryField.getText()));
+                    product.setIdCategory(categoryField.getSelectionModel().getSelectedIndex() + 1);
                     product.setUnit(unitField.getText());
                     product.setQuantity(Integer.parseInt(quantityField.getText()));
-                    product.setIdProvider(providerField.getSelectionModel().getSelectedIndex());
+                    product.setIdProvider(providerField.getSelectionModel().getSelectedIndex() + 1);
                     
                     window.close();
                 }
@@ -181,6 +203,15 @@ public class EditWindow {
         window.setScene(new Scene(verticalPane));
         window.setResizable(false);
         window.showAndWait();
+    }
+    
+    private boolean isInteger(String value){
+        try{
+            Integer.parseInt(value);
+            return true;
+        }catch(NumberFormatException e){
+            return false;
+        }
     }
     
 }

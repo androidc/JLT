@@ -153,10 +153,12 @@ public class ProductsWindow extends Stage{
                     //System.out.println("Selected product - " + table.getSelectionModel().getSelectedItem());
                     product = new EditWindow().editProductData(table.getSelectionModel().getSelectedItem(), providersData);
                     if (product != null) {
-                        //productsData.add(product);
+                        
+                        //productsData.sorted();
                         ProductsSaver save = new ProductsSaver();
                         //save.connect(url, user, password);
                         save.saveData(product, DatabaseConnection.getConnection(), "update");
+                        table.refresh();
                         //save.close();
                     }
                 }
