@@ -133,7 +133,7 @@ public class ProductsWindow extends Stage{
         grid.add(searchCmb, 2, 3,2,1);
         
         TextField searchField = new TextField();
-        grid.add(searchField, 4, 3,2,1);
+        grid.add(searchField, 4, 3, 2, 1);
         
         Label singleProduct = new Label("Product");
         grid.add(singleProduct, 2, 4);
