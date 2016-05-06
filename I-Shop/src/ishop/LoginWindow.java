@@ -16,10 +16,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import sun.security.jgss.LoginConfigImpl;
 
 public class LoginWindow {
     private String url = "jdbc:mysql://localhost:3306/shop",
-                          //"jdbc:mysql://77.108.69.15:3306/shop",
+                         // "jdbc:mysql://77.108.69.15:3306/shop",
                    user = "",
                    password = "";
     private boolean isLogin = false;        //  Переделать, это явная "дырка" в безопасности
@@ -53,22 +54,46 @@ public class LoginWindow {
         Button okButton = new Button("Login");
         Button cancelButton = new Button("Cancel");
         
+        Label tryConnectingLabel = new Label();
+        
         EventHandler event = new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
                 if (event.getSource() == okButton){
+                    okButton.setDisable(true);
+                    loginField.setDisable(true);
+                    passwordField.setDisable(true);
+                    tryConnectingLabel.setText("... trying to connect ...");
+                    //Thread t = new Thread(){
+                    //    @Override
+                    //    public void run(){
+                            if (DatabaseConnection.getConnection(url, loginField.getText(), passwordField.getText()) != null){
+                                System.out.println("loggined!");
+                                isLogin = true;
+                                //Thread.currentThread().interrupt();
+                                if (stage.isShowing()) stage.close();
+                                
+                            }
+                            else {
+                                System.out.println("Can't connecting to DB");
+                                //System.exit(0);
+                            }
+                            tryConnectingLabel.setText(null);
+                            passwordField.clear();
+                            loginField.setDisable(false);
+                            passwordField.setDisable(false);
+                            okButton.setDisable(false);
+                    //    };
+                    //};
+                    //t.start();
+//                    Thread currT = Thread.currentThread();
+//                    currT.join();
+                    //while(t.isAlive()){}
+                        
                     
-                    if (DatabaseConnection.getConnection(url, loginField.getText(), passwordField.getText()) != null){
-                        System.out.println("loggined!");
-                        isLogin = true;
-                        stage.close();
-                    }
-                    else {
-                        System.out.println("Can't connecting to DB");
-                        //System.exit(0);
-                    }
-                    passwordField.clear();
+                    
                 }
+                
                 if (event.getSource() == cancelButton){
                     System.exit(0);
                 }
@@ -85,7 +110,7 @@ public class LoginWindow {
         //buttonPane.setHgap(10);
         //buttonPane.setVgap(10);
         
-        loginPane.getChildren().addAll(loginLabel, loginField, passwordLabel, passwordField, buttonPane);
+        loginPane.getChildren().addAll(loginLabel, loginField, passwordLabel, passwordField, tryConnectingLabel, buttonPane);
         
         
         stage.setResizable(false);

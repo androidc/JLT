@@ -29,7 +29,7 @@ public class EditWindow {
     private ComboBox categoryField, providerField;
     private Button saveButton, cancelButton;
     
-    private boolean correct = false;
+    private boolean correct = true;
     //private Product product;
     
     
@@ -82,23 +82,21 @@ public class EditWindow {
                 return new ListCell<ProductsCategory>(){
                     @Override
                     public void updateItem(ProductsCategory item, boolean empty){
+                        super.updateItem(item, empty);
                         if (item != null){
                             setText(item.getName());
                             setGraphic(null);
                         }
                     }
-                    
                 };
             }
-            
         });
+        categoryField.getSelectionModel().select(product.getIdCategory());
         
-
         Label unitLabel = new Label("Item");
         unitField = new TextField(product.getUnit());
 
         Label quantityLabel = new Label("Quantity");
-        
         quantityField = new TextField(String.valueOf(product.getQuantity()));
         quantityField.textProperty().addListener(new ChangeListener<String>(){
             
@@ -112,7 +110,6 @@ public class EditWindow {
                     correct = false;
                 }
             }
-            
         });
 
         Label providerLabel = new Label("Provider");
@@ -131,7 +128,6 @@ public class EditWindow {
                     @Override
                     public void updateItem(Provider item, boolean empty) {
                         super.updateItem(item, empty);
-                        
                         if (!empty) {
                             //setText(item.getName());
                             setText(item.getName());

@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ProductsCategoryLoader{
+public class ProductsCategoryLoader implements Loadable{
 
     private Statement statement;
     private ResultSet resultSet;
@@ -17,8 +17,9 @@ public class ProductsCategoryLoader{
     
     
     
-    public HashMap<Integer, String> loadData(Connection connection) {
-        HashMap<Integer, String> prCategory = new HashMap<>();
+    @Override
+    public ArrayList<ProductsCategory> loadData(Connection connection) {
+        ArrayList<ProductsCategory> prCategory = new ArrayList<>();
         
         if (connection != null){
             try{
@@ -30,7 +31,7 @@ public class ProductsCategoryLoader{
                     productsCategory.setID(resultSet.getInt("idCategory"));
                     productsCategory.setName(resultSet.getString("categoryName"));
                     
-                    prCategory.put(productsCategory.getID(), productsCategory.getName());
+                    prCategory.add(productsCategory);
                 }
             }catch(SQLException e){
                 e.printStackTrace();
