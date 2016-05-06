@@ -33,26 +33,26 @@ public class EditWindow {
     private Product product;
     
     
-    public Product editProductData(Product prd, ObservableList <Provider> providers){
+    public Product editProductData(Product prd, ObservableList <String> providers){
         product = prd;
         
         if (product == null) this.product = new Product();
         
         init(product, providers);
         
-        nameField.setText(product.getName());
-        codeField.setText(product.getCode());
-        categoryField.setVisibleRowCount(0);             //setText(String.valueOf(product.getIdCategory()));
-        unitField.setText(product.getUnit());
-        quantityField.setText(String.valueOf(product.getQuantity()));
-        providerField.setVisibleRowCount(0);
-        System.out.println("product name - " + product.getName());
+//        nameField.setText(product.getName());
+//        codeField.setText(product.getCode());
+//        categoryField.setVisibleRowCount(0);             //setText(String.valueOf(product.getIdCategory()));
+//        unitField.setText(product.getUnit());
+//        quantityField.setText(String.valueOf(product.getQuantity()));
+//        providerField.setVisibleRowCount(0);
+//        System.out.println("product name - " + product);
         
         return product;
     }
     
     
-    private void init(Product prd, ObservableList <Provider> providers){
+    private void init(Product prd, ObservableList <String> providers){
         product = prd;
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
@@ -109,29 +109,29 @@ public class EditWindow {
         //TextField providerField = new TextField();
         providerField = new ComboBox();
         providerField.setItems(providers);
-        
+        providerField.getSelectionModel().select(product.getIdProvider());
         providerField.setPromptText("Choise provider");
         providerField.setEditable(true);
     
-        providerField.setCellFactory(new Callback<ListView<Provider>, ListCell<Provider>>() {
-            @Override
-            public ListCell<Provider> call(ListView<Provider> param) {
-                
-                return new ListCell<Provider>() {
-                    @Override
-                    public void updateItem(Provider item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (!empty) {
-                            //setText(item.getName());
-                            setText(item.getName());
-                            setGraphic(null);
-                        }//else setText("***");
-                    }
-                };
-                
-            }
-        });
-        providerField.getSelectionModel().select(product.getIdProvider());
+//        providerField.setCellFactory(new Callback<ListView<Provider>, ListCell<Provider>>() {
+//            @Override
+//            public ListCell<Provider> call(ListView<Provider> param) {
+//                
+//                return new ListCell<Provider>() {
+//                    @Override
+//                    public void updateItem(Provider item, boolean empty) {
+//                        super.updateItem(item, empty);
+//                        if (!empty) {
+//                            //setText(item.getName());
+//                            setText(item.getName());
+//                            setGraphic(null);
+//                        }//else setText("***");
+//                    }
+//                };
+//                
+//            }
+//        });
+        
         
         VBox verticalPane = new VBox();
         FlowPane buttonsPane = new FlowPane();

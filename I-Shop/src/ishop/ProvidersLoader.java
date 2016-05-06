@@ -21,8 +21,8 @@ public class ProvidersLoader implements Loadable{
     
     
     @Override
-    public ArrayList<Provider> loadData(Connection connection){
-        ArrayList<Provider> providers = new ArrayList<>();
+    public ArrayList<String> loadData(Connection connection){
+        ArrayList<String> providers = new ArrayList<>();
         if (connection != null){
             try{
                 statement = connection.createStatement();
@@ -32,7 +32,7 @@ public class ProvidersLoader implements Loadable{
                     Provider provider = new Provider();
                     provider.setID(resultSet.getInt("idProvider"));
                     provider.setName(resultSet.getString("companyName"));
-                    providers.add(provider);
+                    providers.add(resultSet.getString("companyName"));
                 }
             }catch(SQLException e){
                 e.printStackTrace();
