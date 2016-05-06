@@ -11,11 +11,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -35,7 +37,7 @@ public class ProductsWindow extends Stage{
     
     private Product product;
     private ObservableList<Product> productsData;
-    private ObservableList<Provider> providersData;
+    private ObservableList<String> providersData;
     private Button addButton, editButton, moveButton, closeButton;
     private Stage primaryStage;
     
@@ -114,14 +116,31 @@ public class ProductsWindow extends Stage{
         
         table.setItems(productsData);
         
-        grid.add(table, 0, 3, 2, 3);
+        grid.add(table, 0, 3, 2, 4);
+        
+        Label searchProduct = new Label("Search");
+        grid.add(searchProduct, 2, 2);
+        
+        ObservableList<String> search = FXCollections.observableArrayList(
+            "id Product",
+            "id Category",
+            "Code",
+            "Name",
+            "id Provider"      
+        
+        );
+        ComboBox searchCmb = new ComboBox(search); 
+        grid.add(searchCmb, 2, 3,2,1);
+        
+        TextField searchField = new TextField();
+        grid.add(searchField, 4, 3,2,1);
         
         Label singleProduct = new Label("Product");
-        grid.add(singleProduct, 2, 2);
+        grid.add(singleProduct, 2, 4);
         
         ListView<Product> productView = new ListView<>();
         productView.setMaxHeight(150);
-        grid.add(productView, 2, 3, 4, 1);
+        grid.add(productView, 2, 5, 4, 1);
         
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -152,6 +171,7 @@ public class ProductsWindow extends Stage{
                 if (ae.getSource() == editButton){
                     //System.out.println("Selected product - " + table.getSelectionModel().getSelectedItem());
                     product = new EditWindow().editProductData(table.getSelectionModel().getSelectedItem(), providersData);
+                   System.out.println("product"+product);
                     if (product != null) {
                         
                         //productsData.sorted();
@@ -184,22 +204,22 @@ public class ProductsWindow extends Stage{
         addButton = new Button("Add product");
         addButton.setOnAction(event);
         GridPane.setValignment(addButton, VPos.BOTTOM);
-        grid.add(addButton, 2, 5);
+        grid.add(addButton, 2, 6);
         
         editButton = new Button("Edit product");
         editButton.setOnAction(event);
         GridPane.setValignment(editButton, VPos.BOTTOM);
-        grid.add(editButton, 3, 5);
+        grid.add(editButton, 3, 6);
         
         moveButton = new Button("Move product");
         moveButton.setOnAction(event);
         GridPane.setValignment(moveButton, VPos.BOTTOM);
-        grid.add(moveButton, 4, 5);
+        grid.add(moveButton, 4, 6);
         
         closeButton = new Button("Close");
         closeButton.setOnAction(event);
         GridPane.setValignment(closeButton, VPos.BOTTOM);
-        grid.add(closeButton, 5, 5);
+        grid.add(closeButton, 5, 6);
         
         Scene scene = new Scene(grid, Color.BLUE); //, 300, 300);
         primaryStage.setScene(scene);
