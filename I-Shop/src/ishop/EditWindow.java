@@ -33,12 +33,12 @@ public class EditWindow {
     private Product product;
     
     
-    public Product editProductData(Product prd, ObservableList <String> providers){
+    public Product editProductData(Product prd){
         product = prd;
         
         if (product == null) this.product = new Product();
         
-        init(product, providers);
+        init(product);
         
 //        nameField.setText(product.getName());
 //        codeField.setText(product.getCode());
@@ -46,13 +46,13 @@ public class EditWindow {
 //        unitField.setText(product.getUnit());
 //        quantityField.setText(String.valueOf(product.getQuantity()));
 //        providerField.setVisibleRowCount(0);
-//        System.out.println("product name - " + product);
+//        System.out.println("product name - " + product.getName());
         
         return product;
     }
     
     
-    private void init(Product prd, ObservableList <String> providers){
+    private void init(Product prd){
         product = prd;
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
@@ -108,6 +108,7 @@ public class EditWindow {
         Label providerLabel = new Label("Provider");
         //TextField providerField = new TextField();
         providerField = new ComboBox();
+        ObservableList providers = FXCollections.observableArrayList(new ProvidersLoader().loadData(DatabaseConnection.getConnection()));
         providerField.setItems(providers);
         providerField.getSelectionModel().select(product.getIdProvider());
         providerField.setPromptText("Choise provider");
@@ -164,7 +165,9 @@ public class EditWindow {
                 if (ae.getSource() == cancelButton){
                     System.out.println("CANCEL");
                     product = null;
+                    
                     System.out.println("PRODUCT = " + product);
+                    
                     window.close();
                 }
             }
@@ -197,6 +200,8 @@ public class EditWindow {
         window.setResizable(false);
         window.showAndWait();
     }
+    
+    
     
     private boolean isInteger(String value){
         try{
