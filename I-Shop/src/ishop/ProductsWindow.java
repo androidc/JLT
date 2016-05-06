@@ -159,7 +159,8 @@ public class ProductsWindow extends Stage{
                 if (ae.getSource() == addButton){
                     //System.out.println("ADD");
                     //editWindow(primaryStage);
-                    product = new EditWindow().editProductData(new Product(), providersData);
+                    product = new EditWindow().editProductData(new Product());
+                    System.out.println("PROD"  + product);
                     if (product != null) {
                         productsData.add(product);
                         ProductsSaver save = new ProductsSaver();
@@ -170,8 +171,8 @@ public class ProductsWindow extends Stage{
                 }
                 if (ae.getSource() == editButton){
                     //System.out.println("Selected product - " + table.getSelectionModel().getSelectedItem());
-                    product = new EditWindow().editProductData(table.getSelectionModel().getSelectedItem(), providersData);
-                   System.out.println("product"+product);
+                    product = new EditWindow().editProductData(table.getSelectionModel().getSelectedItem());
+                    
                     if (product != null) {
                         
                         //productsData.sorted();
