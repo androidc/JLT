@@ -28,10 +28,10 @@ import javafx.util.Callback;
 
 public class ProductsWindow extends Stage{
     
-    private final String url = "jdbc:mysql://localhost:3306/shop";      
-                               // "jdbc:mysql://77.108.69.15:3306/shop";
-    private final String user = "admin";
-    private final String password = "shop2016";
+//    private final String url = "jdbc:mysql://localhost:3306/shop";      
+//                               // "jdbc:mysql://77.108.69.15:3306/shop";
+//    private final String user = "admin";
+//    private final String password = "shop2016";
     
     private Product product;
     private ObservableList<Product> productsData;

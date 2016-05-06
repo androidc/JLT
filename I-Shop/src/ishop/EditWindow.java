@@ -29,23 +29,14 @@ public class EditWindow {
     private ComboBox categoryField, providerField;
     private Button saveButton, cancelButton;
     
-    private boolean correct = false;
-    //private Product product;
+    private boolean correct = true;
+    private Product product;
     
     
-    
-//    public Product getProductData(ObservableList <Provider> providers){
-//        
-//        product = new Product();
-//        init(providers);
-//        
-//        return product;
-//    }
-    
-    
-    public Product editProductData(Product product, ObservableList <Provider> providers){
+    public Product editProductData(Product prd, ObservableList <Provider> providers){
+        product = prd;
         
-        if (product == null) product = new Product();
+        if (product == null) this.product = new Product();
         
         init(product, providers);
         
@@ -56,11 +47,13 @@ public class EditWindow {
         quantityField.setText(String.valueOf(product.getQuantity()));
         providerField.setVisibleRowCount(0);
         System.out.println("product name - " + product.getName());
+        
         return product;
     }
     
     
-    private void init(Product product, ObservableList <Provider> providers){
+    private void init(Product prd, ObservableList <Provider> providers){
+        product = prd;
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         
@@ -82,23 +75,21 @@ public class EditWindow {
                 return new ListCell<ProductsCategory>(){
                     @Override
                     public void updateItem(ProductsCategory item, boolean empty){
+                        super.updateItem(item, empty);
                         if (item != null){
                             setText(item.getName());
                             setGraphic(null);
                         }
                     }
-                    
                 };
             }
-            
         });
+        categoryField.getSelectionModel().select(product.getIdCategory());
         
-
         Label unitLabel = new Label("Item");
         unitField = new TextField(product.getUnit());
 
         Label quantityLabel = new Label("Quantity");
-        
         quantityField = new TextField(String.valueOf(product.getQuantity()));
         quantityField.textProperty().addListener(new ChangeListener<String>(){
             
@@ -112,7 +103,6 @@ public class EditWindow {
                     correct = false;
                 }
             }
-            
         });
 
         Label providerLabel = new Label("Provider");
@@ -131,7 +121,6 @@ public class EditWindow {
                     @Override
                     public void updateItem(Provider item, boolean empty) {
                         super.updateItem(item, empty);
-                        
                         if (!empty) {
                             //setText(item.getName());
                             setText(item.getName());
@@ -144,15 +133,9 @@ public class EditWindow {
         });
         providerField.getSelectionModel().select(product.getIdProvider());
         
-        
- 
-        
-
         VBox verticalPane = new VBox();
         FlowPane buttonsPane = new FlowPane();
         
-        
-
         verticalPane.setAlignment(Pos.CENTER_LEFT);
         buttonsPane.setAlignment(Pos.CENTER_RIGHT);
 
@@ -167,7 +150,7 @@ public class EditWindow {
             @Override
             public void handle(ActionEvent ae){
                 if (ae.getSource() == saveButton && correct){
-                    System.out.println("SAVE");
+                    //System.out.println("SAVE");
                     //product = new Product();
                     product.setName(nameField.getText());
                     product.setCode(codeField.getText());
@@ -179,8 +162,9 @@ public class EditWindow {
                     window.close();
                 }
                 if (ae.getSource() == cancelButton){
-                    //System.out.println("CANCEL");
-                    //product = null;
+                    System.out.println("CANCEL");
+                    product = null;
+                    System.out.println("PRODUCT = " + product);
                     window.close();
                 }
             }
