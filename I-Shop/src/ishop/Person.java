@@ -7,10 +7,7 @@ import java.util.Date;
 
 public class Person{
 
-    void getId(int aInt) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     public static enum Level {ADMINISTRATOR, MAIN_OPERATOR, OPERATOR, CUSTOMER, PROVIDER};
             
     private int id;
@@ -21,6 +18,8 @@ public class Person{
     private String address;                     // Адрес
     private String personalPhone, workPhone;    // Телефон
     private Level lvl;                          // Уровень доступа к БД, определяется Правами доступа
+    private String login;
+    private String password;
     
     
     public Person(){
@@ -116,6 +115,22 @@ public class Person{
 
     public void setIdFunction(int idFunction) {
         this.idFunction = idFunction;
+    }
+    
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
         

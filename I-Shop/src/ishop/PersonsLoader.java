@@ -9,12 +9,11 @@ import java.util.ArrayList;
 public class PersonsLoader implements Loadable{
     private Statement statement;
     private ResultSet resultSet;
-    //protected PreparedStatement prStatement;
-    
-    // КЛАСС НЕ ДОДЕЛАН!!!
     
     private final String sendQuery = "SELECT * FROM " + "personal";
 
+    
+    
     @Override
     public ArrayList loadData(Connection connection) {
         ArrayList<Person> persons = new ArrayList<>();
@@ -25,16 +24,17 @@ public class PersonsLoader implements Loadable{
                 while(resultSet.next()){
                     Person person = new Person();
                     //person.setID(++id);
-                    //product.setID(resultSet.getInt("idProduct"));
                     person.setId(resultSet.getInt("idPerson"));
                     person.setIdRole(resultSet.getInt("idRole"));
                     person.setIdFunction(resultSet.getInt("idFunction"));
                     person.setFirstName(resultSet.getString("firstName"));
                     person.setLastName(resultSet.getString("lastName"));
                     person.setBirthday(resultSet.getDate("birthday"));
-//                    product.setIdProvider(resultSet.getInt("idProvider"));
-//                                        
-//                    products.add(product);
+                    person.setPersonalPhone(resultSet.getString("personalPhone"));
+                    person.setWorkPhone(resultSet.getString("workPhone"));
+                    person.setAddress(resultSet.getString("address"));
+                    
+                    persons.add(person);
                 }
             }catch(SQLException e){
                 e.printStackTrace();
