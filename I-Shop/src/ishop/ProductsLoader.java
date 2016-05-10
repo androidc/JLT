@@ -11,21 +11,24 @@ public class ProductsLoader implements Loadable{
     private Statement statement;
     private ResultSet resultSet;
     
-    private final String sendQuery = "SELECT * FROM " + "product";
-    
+    private String sendQuery = "SELECT * FROM " + "product";
+
+    public void setSendQuery(String sendQuery) {
+        this.sendQuery = sendQuery;
+    }
     
     public ProductsLoader(){
         
     }
     
-    
     @Override
     public ArrayList<Product> loadData(Connection connection){
         ArrayList<Product> products = new ArrayList<>();
         if (connection != null){
-            try{
-                statement = connection.createStatement();
-                resultSet = statement.executeQuery(sendQuery);
+            try(Statement statement = connection.createStatement();
+                ResultSet resultSet= statement.executeQuery(sendQuery);){
+//                statement = connection.createStatement();
+//                resultSet = statement.executeQuery(sendQuery);
                 int id = 0;
                 while(resultSet.next()){
                     Product product = new Product();
