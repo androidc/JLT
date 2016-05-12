@@ -1,5 +1,7 @@
 package ishop;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -116,38 +119,80 @@ public class ProductsWindow extends Stage{
         
         table.setItems(productsData);
         
-        grid.add(table, 0, 3, 2, 4);
+        grid.add(table, 0, 3, 2, 5);
         
         Label searchProduct = new Label("Search");
         grid.add(searchProduct, 2, 2);
         
         ObservableList<String> search = FXCollections.observableArrayList(
-            "id Product",
-            "id Category",
+            "idProduct",
+            "idCategory",
+            "Category",
             "Code",
             "Name",
-            "id Provider"      
+            "idProvider",
+            "Provider"  
         
         );
+        
         ComboBox searchCmb = new ComboBox(search); 
-        grid.add(searchCmb, 2, 3,2,1);
+        grid.add(searchCmb, 2, 3, 1, 1);
+        
+        searchCmb.setValue("idProduct");
         
         TextField searchField = new TextField();
-        grid.add(searchField, 4, 3, 2, 1);
+        grid.add(searchField, 3, 3, 3, 1);
+       
+        searchField.textProperty().addListener(new ChangeListener<String>(){
+          @Override public void changed(ObservableValue ov, String t, String t1) {
+            String searchItem=searchCmb.getSelectionModel().getSelectedItem().toString();
+            String searchQuery;
+              if (searchItem.equals("Category")){
+                 searchQuery= "SELECT * FROM product WHERE idCategory=(SELECT idCategory FROM product_category WHERE categoryName like  '%"+t1+"%')";
+                 loadProducts.setSendQuery(searchQuery); 
+                  
+              } else if (searchItem.equals("Provider")){
+                 searchQuery= "SELECT * FROM product WHERE idProvider=(SELECT idProvider FROM provider WHERE companyName like  '%"+t1+"%')";
+                 loadProducts.setSendQuery(searchQuery); 
+              } else{
+                  searchQuery="Select * from product where "+searchItem+" like  '%"+t1+"%'"; 
+                  loadProducts.setSendQuery(searchQuery);
+                    
+                   
+              }
+              System.out.println(searchQuery);
+               productsData = FXCollections.observableArrayList(loadProducts.loadData(DatabaseConnection.getConnection()));
+               table.setItems(productsData);
+            }    
+  
+        });
         
         Label singleProduct = new Label("Product");
         grid.add(singleProduct, 2, 4);
         
-        ListView<Product> productView = new ListView<>();
-        productView.setMaxHeight(150);
-        grid.add(productView, 2, 5, 4, 1);
+        VBox vbox = new VBox(1);
+        vbox.setAlignment(Pos.BOTTOM_RIGHT);
+        Label idProduct = new Label("id Product:");
+        Label category = new Label("Category:");
+        Label code = new Label("Code:");
+        Label name = new Label("Name:");
+        Label unit = new Label("Unit");
+        Label quantity = new Label("Quantity:");
+        Label provider = new Label("Provider:");
+        vbox.getChildren().addAll(idProduct, category, code, name, unit,quantity, provider );
+        grid.add(vbox, 2, 5);
+        
+        ListView<String> productView = new ListView<>();
+        productView.setMaxHeight(190);
+        grid.add(productView, 3, 5, 3, 2);
         
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 Product pr = (Product) table.getSelectionModel().getSelectedItem();
-                ObservableList details = FXCollections.observableArrayList(pr);
+                ObservableList <String>details = FXCollections.observableArrayList(pr.DataBD(DatabaseConnection.getConnection()));
                 productView.setItems(details);
+                
                 //productView.setCellFactory(new PropertyValueFactory<>(""));
             }
         });
@@ -205,22 +250,22 @@ public class ProductsWindow extends Stage{
         addButton = new Button("Add product");
         addButton.setOnAction(event);
         GridPane.setValignment(addButton, VPos.BOTTOM);
-        grid.add(addButton, 2, 6);
+        grid.add(addButton, 2, 7);
         
         editButton = new Button("Edit product");
         editButton.setOnAction(event);
         GridPane.setValignment(editButton, VPos.BOTTOM);
-        grid.add(editButton, 3, 6);
+        grid.add(editButton, 3, 7);
         
         moveButton = new Button("Move product");
         moveButton.setOnAction(event);
         GridPane.setValignment(moveButton, VPos.BOTTOM);
-        grid.add(moveButton, 4, 6);
+        grid.add(moveButton, 4, 7);
         
         closeButton = new Button("Close");
         closeButton.setOnAction(event);
         GridPane.setValignment(closeButton, VPos.BOTTOM);
-        grid.add(closeButton, 5, 6);
+        grid.add(closeButton, 5, 7);
         
         Scene scene = new Scene(grid, Color.BLUE); //, 300, 300);
         primaryStage.setScene(scene);

@@ -9,10 +9,10 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         
         //   данные по БД в классе ProductsWindow
+        new StaffWindow();
         
-        
-        if (new LoginWindow().login()) new ProductsWindow(primaryStage);
-        else System.out.println("Error login. The programm will be closed.");
+//        if (new LoginWindow().login()) new ProductsWindow(primaryStage);
+//        else System.out.println("Error login. The programm will be closed.");
     }
     
 //---

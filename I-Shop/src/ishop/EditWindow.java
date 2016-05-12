@@ -69,21 +69,22 @@ public class EditWindow {
         categoryField.setItems(productsCategory);
         categoryField.setPromptText("Choise products category");
         categoryField.setEditable(true);
-        categoryField.setCellFactory(new Callback<ListView<ProductsCategory>, ListCell<ProductsCategory>>(){
-            @Override
-            public ListCell<ProductsCategory> call(ListView<ProductsCategory> param) {
-                return new ListCell<ProductsCategory>(){
-                    @Override
-                    public void updateItem(ProductsCategory item, boolean empty){
-                        super.updateItem(item, empty);
-                        if (item != null){
-                            setText(item.getName());
-                            setGraphic(null);
-                        }
-                    }
-                };
-            }
-        });
+        
+//        categoryField.setCellFactory(new Callback<ListView<ProductsCategory>, ListCell<ProductsCategory>>(){
+//            @Override
+//            public ListCell<ProductsCategory> call(ListView<ProductsCategory> param) {
+//                return new ListCell<ProductsCategory>(){
+//                    @Override
+//                    public void updateItem(ProductsCategory item, boolean empty){
+//                        super.updateItem(item, empty);
+//                        if (item != null){
+//                            setText(item.getName());
+//                            setGraphic(null);
+//                        }
+//                    }
+//                };
+//            }
+//        });
         categoryField.getSelectionModel().select(product.getIdCategory());
         
         Label unitLabel = new Label("Item");
