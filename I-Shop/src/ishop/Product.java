@@ -2,6 +2,12 @@ package ishop;
 
 // Класс товар.
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+
 public class Product {
     
     private int id = 0;             // Нужен ли? MySQL генерирует автоматически
@@ -101,5 +107,29 @@ public class Product {
     public int getID() {
         return id;
     }
-
+    
+    public String DataBD(Connection connection){
+        String sendQuery= "SELECT categoryName FROM product_category WHERE idCategory=(SELECT idCategory FROM product WHERE name='"+name+"')";
+        String allData="";
+        try(Statement statement = connection.createStatement();
+            ResultSet resultSet= statement.executeQuery(sendQuery);){
+                    while(resultSet.next()){
+                    allData=id+"\n"+resultSet.getString(1)+"\n"+code+"\n"+name+"\n"+unit+"\n"+quantity+"\n";
+                }
+            }catch(SQLException e){
+                e.printStackTrace();
+                return null;
+            }
+       sendQuery= "SELECT companyName FROM provider WHERE idProvider=(SELECT idProvider FROM product WHERE name='"+name+"')";
+       try(Statement statement = connection.createStatement();
+            ResultSet resultSet= statement.executeQuery(sendQuery);){
+                    while(resultSet.next()){
+                    allData=allData+resultSet.getString(1);
+                }
+            }catch(SQLException e){
+                e.printStackTrace();
+                return null;
+            }
+        return allData;
+    }
 }
