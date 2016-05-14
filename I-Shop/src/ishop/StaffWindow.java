@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -36,6 +37,8 @@ public class StaffWindow extends Stage{
         
         TableView staffTable = new TableView();
         staffTable.setPrefSize(800, 400);
+        staffTable.setEditable(true);
+        
         
         TableColumn firstNameColumn = new TableColumn("FirstName");
         TableColumn lastNameColumn = new TableColumn("LastName");
@@ -43,7 +46,7 @@ public class StaffWindow extends Stage{
         TableColumn phoneColumn = new TableColumn("Phone");
         TableColumn workPhoneColumn = new TableColumn("work");
         TableColumn personalPhoneColumn = new TableColumn("personal");
-        TableColumn functionColumn = new TableColumn("Function");
+        TableColumn<Person, Role> functionColumn = new TableColumn<>("Function");
         TableColumn addressColumn = new TableColumn("Address");
         TableColumn loginColumn = new TableColumn("Login");
         TableColumn passwordColumn = new TableColumn("Password");
@@ -73,6 +76,7 @@ public class StaffWindow extends Stage{
         passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
         
         staffTable.setItems(staffList);
+        functionColumn.setCellFactory(ComboBoxTableCell.<Person, Role>forTableColumn(FXCollections.observableArrayList(new RoleLoader().loadData(DatabaseConnection.getConnection()))));
         
         Button saveButton = new Button("Save");
         Button cancelButton = new Button("Cancel");
