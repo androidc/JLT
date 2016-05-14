@@ -1,5 +1,7 @@
 package ishop;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -8,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
@@ -55,6 +58,21 @@ public class StaffWindow extends Stage{
                                         , addressColumn
                                         , loginColumn
                                         , passwordColumn);
+        
+        ObservableList staffList = FXCollections.observableArrayList(new PersonsLoader().loadData(DatabaseConnection.getConnection()));
+        
+        
+        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        birthdayColumn.setCellValueFactory(new PropertyValueFactory<>("birthday"));
+        workPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("workPhone"));
+        personalPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("personalPhone"));
+        functionColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
+        addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+        loginColumn.setCellValueFactory(new PropertyValueFactory<>("login"));
+        passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
+        
+        staffTable.setItems(staffList);
         
         Button saveButton = new Button("Save");
         Button cancelButton = new Button("Cancel");

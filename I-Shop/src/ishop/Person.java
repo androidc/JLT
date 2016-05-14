@@ -1,6 +1,8 @@
 package ishop;
 
 import java.util.Date;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 // Класс Персона.
 
@@ -8,50 +10,55 @@ import java.util.Date;
 public class Person{
 
     
-    public static enum Level {ADMINISTRATOR, MAIN_OPERATOR, OPERATOR, CUSTOMER, PROVIDER};
+    //public static enum Level {ADMINISTRATOR, MAIN_OPERATOR, OPERATOR, CUSTOMER, PROVIDER};
             
     private int id;
     private int idRole;
     private int idFunction;
-    private String firstName, lastName;         // Имя, фамилия
+    private final StringProperty firstName = new SimpleStringProperty();           // Имя,
+    private final StringProperty lastName = new SimpleStringProperty();           // Фамилия
     private Date birthday;                      // Дата рождения
-    private String address;                     // Адрес
-    private String personalPhone, workPhone;    // Телефон
-    private Level lvl;                          // Уровень доступа к БД, определяется Правами доступа
-    private String login;
-    private String password;
+    private final StringProperty address  = new SimpleStringProperty();                     // Адрес
+    private final StringProperty personalPhone  = new SimpleStringProperty();
+    private final StringProperty workPhone  = new SimpleStringProperty();         // Телефон
+    private String[] levelName = {"", "ADMINISTRATOR", "MAIN_OPERATOR", "OPERATOR", "CUSTOMER", "PROVIDER"};                          // Уровень доступа к БД, определяется Правами доступа
+    private String level;
+    private final StringProperty login  = new SimpleStringProperty();
+    private final StringProperty password  = new SimpleStringProperty();
     
     
     public Person(){
-        this("Somebody", "Somebody");
+//        this("login", "");
     }
     
-    public Person(String firstName, String lastName){
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
+//    public Person(String login, String password){
+//        this.login = new SimpleStringProperty(login);
+//        this.password = new SimpleStringProperty(password);
+//        
+//    }
     
-    public Person(String firstName, String lastName, Date birthday, String address, String workPhone){
-        this(firstName, lastName);
-        this.birthday = birthday;
-        this.address = address;
-        this.workPhone = workPhone;
-    }
+//    public Person(String firstName, String lastName, Date birthday, String address, String workPhone){
+//        this(firstName, lastName);
+//        this.birthday = birthday;
+//        this.address = new SimpleStringProperty(address);
+//        this.workPhone = new SimpleStringProperty(workPhone);
+//    }
     
+        
     public void setFirstName(String firstName){
-        this.firstName = firstName;
+        this.firstName.set(firstName);
     }
     
     public String getFirstName(){
-        return firstName;
+        return firstName.get();
     }
     
     public void setLastName(String lastName){
-        this.lastName = lastName;
+        this.lastName.set(lastName);
     }
  
     public String getLastName(){
-        return lastName;
+        return lastName.get();
     }
     
     public void setBirthday(Date birthday){
@@ -63,34 +70,38 @@ public class Person{
     }
     
     public void setAddress(String address){
-        this.address = address;
+        this.address.set(address);
     }
  
     public String getAddress(){
-        return address;
+        return address.get();
     }
     
     public void setPersonalPhone(String phoneNumber){
-        this.personalPhone = phoneNumber;
+        personalPhone.set(phoneNumber);
     }
  
     public String getPersonalPhone(){
-        return personalPhone;
+        return personalPhone.get();
     }
     
     public void setWorkPhone(String phoneNumber){
-        this.workPhone = phoneNumber;
+        workPhone.set(phoneNumber);
     }
  
     public String getWorkPhone(){
-        return workPhone;
+        return workPhone.get();
     }
-    public void setLevel(Level lvl){
-        this.lvl = lvl;
+//    public void setLevel(Level lvl){
+//        this.lvl = lvl;
+//    }
+    
+    public void setLevel(int lvl){
+        this.level = levelName[lvl];
     }
     
-    public Level getLevel(){
-        return lvl;
+    public String getLevel(){
+        return level;
     }
     
     public int getId() {
@@ -118,19 +129,19 @@ public class Person{
     }
     
     public String getLogin() {
-        return login;
+        return login.get();
     }
 
     public void setLogin(String login) {
-        this.login = login;
+        this.login.set(login);
     }
 
     public String getPassword() {
-        return password;
+        return password.get();
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password.set(password);
     }
 }
         
