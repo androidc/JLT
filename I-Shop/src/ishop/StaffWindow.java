@@ -6,15 +6,22 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+import javafx.util.converter.DefaultStringConverter;
 
 public class StaffWindow extends Stage{
     
@@ -46,7 +53,7 @@ public class StaffWindow extends Stage{
         TableColumn phoneColumn = new TableColumn("Phone");
         TableColumn workPhoneColumn = new TableColumn("work");
         TableColumn personalPhoneColumn = new TableColumn("personal");
-        TableColumn<Person, Role> functionColumn = new TableColumn<>("Function");
+        TableColumn functionColumn = new TableColumn<>("Function");
         TableColumn addressColumn = new TableColumn("Address");
         TableColumn loginColumn = new TableColumn("Login");
         TableColumn passwordColumn = new TableColumn("Password");
@@ -76,8 +83,86 @@ public class StaffWindow extends Stage{
         passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
         
         staffTable.setItems(staffList);
-        functionColumn.setCellFactory(ComboBoxTableCell.<Person, Role>forTableColumn(FXCollections.observableArrayList(new RoleLoader().loadData(DatabaseConnection.getConnection()))));
+        staffTable.setEditable(true);
         
+        ObservableList staffRole = FXCollections.observableArrayList(new RoleLoader().loadData(DatabaseConnection.getConnection()));
+        
+        
+        functionColumn.setCellFactory(ComboBoxTableCell.forTableColumn(staffRole));
+        
+        
+        
+//        functionColumn.setCellFactory(new Callback<TableColumn<Role, String>, TableCell<Role, String>>(){
+//            @Override
+//            public TableCell<Role, String> call(TableColumn<Role, String> param) {
+//                
+//                return new TableCell<Role, String>(){
+//                    @Override
+//                    public void updateItem(String r, boolean empty){
+//                        
+//                    }
+//                };
+//            }
+//            
+//        });
+        
+        
+//        functionColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new Callback <TableColumn<Role, Role>, TableCell<Role, Role>>(){
+//            
+//            @Override
+//            public TableCell<Role, Role> call (TableColumn<Role, Role> r){
+//                //System.out.println("!!!");
+//                return new TableCell<Role, Role>(){
+//                    
+//                    @Override
+//                    public void updateItem(Role r, boolean empty){
+//                        super.updateItem(r, empty);
+//                        if (empty){
+//                            setText(null);
+//                        }else{
+//                            setGraphic(null);
+//                            setText(r.getName() + "---");
+//                            System.out.println(r);
+//                        }
+//                    }
+//                };
+//            }
+//        }));
+        //functionColumn.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(), FXCollections.observableArrayList(new RoleLoader().loadData(DatabaseConnection.getConnection()))));
+        
+        
+//        Callback cb = new Callback <Role, String>(){
+//            @Override
+//            public String call(Role r){
+//                //return r.getName();
+//                return r.getName(); //{
+//                    
+////                    @Override
+////                    public void updateItem(Role item, boolean empty){
+////                        super.updateItem(item, empty);
+////                        
+////                        if (empty){
+////                            setText(null);
+////                            
+////                        }else{
+////                            setText(item.getName());
+////                            setGraphic(null);
+////                            System.out.println(item.getName());
+////                        }
+////                    }
+////                    
+////                };
+//            }
+//
+//            
+//
+//            
+//        };
+//        
+        //functionColumn.setCellFactory(ComboBoxTableCell.forTableColumn(staffRole));
+        
+        
+
         Button saveButton = new Button("Save");
         Button cancelButton = new Button("Cancel");
         

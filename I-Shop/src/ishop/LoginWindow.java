@@ -19,8 +19,8 @@ import javafx.stage.StageStyle;
 import sun.security.jgss.LoginConfigImpl;
 
 public class LoginWindow {
-    private String url = //"jdbc:mysql://localhost/shop",
-                         "jdbc:mysql://77.108.69.15:3306/shop" ,
+    private String url = "jdbc:mysql://localhost/shop",
+                         //"jdbc:mysql://77.108.69.15:3306/shop" ,
                    user = "",
                    password = "";
     private boolean isLogin = false;        //  Переделать, это явная "дырка" в безопасности

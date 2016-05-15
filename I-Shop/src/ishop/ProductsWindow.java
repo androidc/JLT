@@ -176,7 +176,7 @@ public class ProductsWindow extends Stage{
         Label category = new Label("Category:");
         Label code = new Label("Code:");
         Label name = new Label("Name:");
-        Label unit = new Label("Unit");
+        Label unit = new Label("Unit:");
         Label quantity = new Label("Quantity:");
         Label provider = new Label("Provider:");
         vbox.getChildren().addAll(idProduct, category, code, name, unit,quantity, provider );

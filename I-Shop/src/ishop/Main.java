@@ -11,7 +11,8 @@ public class Main extends Application {
         //   данные по БД в классе ProductsWindow
         
         // Отладка StaffWindow
-        DatabaseConnection.getConnection("jdbc:mysql://77.108.69.15:3306/shop", "admin", "shop2016");
+        //DatabaseConnection.getConnection("jdbc:mysql://77.108.69.15:3306/shop", "admin", "shop2016");
+        DatabaseConnection.getConnection("jdbc:mysql://localhost:3306/shop", "admin", "shop2016");
         new StaffWindow();
         
 //        if (new LoginWindow().login()) new ProductsWindow(primaryStage);

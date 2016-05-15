@@ -1,9 +1,12 @@
 package ishop;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Role {
     
     private int idRole;
-    private String name;
+    private StringProperty name = new SimpleStringProperty();
     private String description;
     
     
@@ -22,11 +25,11 @@ public class Role {
     }
 
     public String getName() {
-        return name;
+        return name.get();
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name.set(name);
     }
 
     public String getDescription() {
@@ -37,5 +40,9 @@ public class Role {
         this.description = description;
     }
     
+    @Override
+    public String toString(){
+        return this.name.get();
+    }
     
 }
