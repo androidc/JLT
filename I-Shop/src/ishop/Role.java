@@ -42,7 +42,7 @@ public class Role {
     
     @Override
     public String toString(){
-        return this.name.get();
+        return this.name.get().toUpperCase();
     }
     
 }

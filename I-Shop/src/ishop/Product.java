@@ -108,9 +108,9 @@ public class Product {
         return id;
     }
     
-    public String DataBD(Connection connection){
-        String sendQuery= "SELECT categoryName FROM product_category WHERE idCategory=(SELECT idCategory FROM product WHERE name='"+name+"')";
-        String allData="";
+    public String DataDB(Connection connection){
+        String sendQuery = "SELECT categoryName FROM product_category WHERE idCategory=(SELECT idCategory FROM product WHERE name='" + name + "')";
+        String allData = "";
         try(Statement statement = connection.createStatement();
             ResultSet resultSet= statement.executeQuery(sendQuery);){
                     while(resultSet.next()){

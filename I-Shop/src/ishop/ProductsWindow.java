@@ -145,17 +145,17 @@ public class ProductsWindow extends Stage{
        
         searchField.textProperty().addListener(new ChangeListener<String>(){
           @Override public void changed(ObservableValue ov, String t, String t1) {
-            String searchItem=searchCmb.getSelectionModel().getSelectedItem().toString();
+            String searchItem = searchCmb.getSelectionModel().getSelectedItem().toString();
             String searchQuery;
               if (searchItem.equals("Category")){
-                 searchQuery= "SELECT * FROM product WHERE idCategory=(SELECT idCategory FROM product_category WHERE categoryName like  '%"+t1+"%')";
+                 searchQuery = "SELECT * FROM product WHERE idCategory=(SELECT idCategory FROM product_category WHERE categoryName like  '%" + t1 + "%')";
                  loadProducts.setSendQuery(searchQuery); 
                   
               } else if (searchItem.equals("Provider")){
-                 searchQuery= "SELECT * FROM product WHERE idProvider=(SELECT idProvider FROM provider WHERE companyName like  '%"+t1+"%')";
+                 searchQuery = "SELECT * FROM product WHERE idProvider=(SELECT idProvider FROM provider WHERE companyName like  '%" + t1 + "%')";
                  loadProducts.setSendQuery(searchQuery); 
               } else{
-                  searchQuery="Select * from product where "+searchItem+" like  '%"+t1+"%'"; 
+                  searchQuery = "Select * from product where "+searchItem+" like  '%" + t1 + "%'"; 
                   loadProducts.setSendQuery(searchQuery);
                     
                    
@@ -190,12 +190,14 @@ public class ProductsWindow extends Stage{
             @Override
             public void handle(MouseEvent event) {
                 Product pr = (Product) table.getSelectionModel().getSelectedItem();
-                ObservableList <String>details = FXCollections.observableArrayList(pr.DataBD(DatabaseConnection.getConnection()));
+                ObservableList <String>details = FXCollections.observableArrayList(pr.DataDB(DatabaseConnection.getConnection()));
                 productView.setItems(details);
                 
-                //productView.setCellFactory(new PropertyValueFactory<>(""));
+                //productView.getItems().addAll("" + pr.getID(), "" + pr.getIdCategory(), pr.getCode(), pr.getName(), pr.getUnit(), "" + pr.getQuantity(), "" + pr.getIdProvider());
             }
         });
+        
+        
         
         EventHandler event = new EventHandler<ActionEvent>(){
             @Override

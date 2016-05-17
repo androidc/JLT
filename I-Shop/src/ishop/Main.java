@@ -13,8 +13,8 @@ public class Main extends Application {
         // Отладка StaffWindow
         //DatabaseConnection.getConnection("jdbc:mysql://77.108.69.15:3306/shop", "admin", "shop2016");
         DatabaseConnection.getConnection("jdbc:mysql://localhost:3306/shop", "admin", "shop2016");
-        new StaffWindow();
-        
+        //new StaffWindow();
+        new ProductsWindow(primaryStage);
 //        if (new LoginWindow().login()) new ProductsWindow(primaryStage);
 //        else System.out.println("Error login. The programm will be closed.");
     }
