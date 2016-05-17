@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="ishop.StaffController">
+   <children>
+      <VBox layoutX="200.0" layoutY="81.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <TableView prefHeight="371.0" prefWidth="600.0">
+              <columns>
+                <TableColumn maxWidth="50.0" minWidth="20.0" prefWidth="30.0" text="N" />
+                <TableColumn prefWidth="120.0" text="FirstName" />
+                  <TableColumn prefWidth="120.0" text="LastName" />
+                  <TableColumn prefWidth="160.0" text="Phone">
+                     <columns>
+                        <TableColumn prefWidth="70.0" text="work" />
+                        <TableColumn prefWidth="70.0" text="personal" />
+                     </columns>
+                  </TableColumn>
+                  <TableColumn prefWidth="120.0" text="Address" />
+                  <TableColumn prefWidth="100.0" text="Role" />
+                  <TableColumn text="Password" />
+                  <TableColumn prefWidth="100.0" text="Login" />
+              </columns>
+            </TableView>
+            <HBox alignment="CENTER_RIGHT" prefHeight="14.0" prefWidth="600.0" spacing="10.0">
+               <children>
+                  <Button mnemonicParsing="false" text="Save" />
+                  <Button mnemonicParsing="false" text="Cancel" />
+               </children>
+               <opaqueInsets>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </opaqueInsets>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
