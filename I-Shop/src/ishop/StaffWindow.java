@@ -63,7 +63,7 @@ public class StaffWindow extends Stage{
         TableColumn               phoneColumn = new TableColumn("Phone");
         TableColumn<Person, String> workPhoneColumn = new TableColumn<>("work");
         TableColumn<Person, String> personalPhoneColumn = new TableColumn<>("personal");
-        TableColumn functionColumn = new TableColumn<>("Function");
+        TableColumn<Role, String> functionColumn = new TableColumn<>("Function");
         TableColumn<Person, String> addressColumn = new TableColumn<>("Address");
         TableColumn<Person, String> loginColumn = new TableColumn<>("Login");
         TableColumn<Person, String> passwordColumn = new TableColumn<>("Password");
@@ -110,23 +110,22 @@ public class StaffWindow extends Stage{
 
 
         
-        functionColumn.setCellFactory(new Callback<TableColumn<Role, String>, ComboBoxTableCell<Role, String>>() {
+        functionColumn.setCellFactory(new Callback<TableColumn<Role, String>, TableCell<Role, String>>() {
             @Override
             public ComboBoxTableCell<Role, String> call(TableColumn<Role, String> param) {
                 //System.out.println(param.getColumns().get(0));
-                return new ComboBoxTableCell<Role, String>(staffRole); 
-                /*{
+                return new ComboBoxTableCell<Role, String>(staffRole) {
                     
-                    //@Override
-                    public void updateItem(Role r, boolean e){
-                        super.updateItem(r.getName(), e);
+                    @Override
+                    public void updateItem(String r, boolean e){
+                        super.updateItem(r, e);
                         if(e){
                             setText(null);
                         }else{
-                            setText(r.getName());
+                            setText(r);
                         }
                     }
-                };*/
+                };
             }
         
         });
