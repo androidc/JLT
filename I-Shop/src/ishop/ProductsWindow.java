@@ -125,8 +125,7 @@ public class ProductsWindow extends Stage{
         grid.add(searchProduct, 2, 2);
         
         ObservableList<String> search = FXCollections.observableArrayList(
-            "idProduct",
-            "idCategory",
+           "idCategory",
             "Category",
             "Code",
             "Name",
@@ -138,7 +137,7 @@ public class ProductsWindow extends Stage{
         ComboBox searchCmb = new ComboBox(search); 
         grid.add(searchCmb, 2, 3, 1, 1);
         
-        searchCmb.setValue("idProduct");
+        searchCmb.setValue("Name");
         
         TextField searchField = new TextField();
         grid.add(searchField, 3, 3, 3, 1);
@@ -148,11 +147,11 @@ public class ProductsWindow extends Stage{
             String searchItem = searchCmb.getSelectionModel().getSelectedItem().toString();
             String searchQuery;
               if (searchItem.equals("Category")){
-                 searchQuery = "SELECT * FROM product WHERE idCategory=(SELECT idCategory FROM product_category WHERE categoryName like  '%" + t1 + "%')";
+                 searchQuery = "SELECT * FROM product WHERE idCategory in (SELECT idCategory FROM product_category WHERE categoryName like  '%" + t1 + "%')";
                  loadProducts.setSendQuery(searchQuery); 
                   
               } else if (searchItem.equals("Provider")){
-                 searchQuery = "SELECT * FROM product WHERE idProvider=(SELECT idProvider FROM provider WHERE companyName like  '%" + t1 + "%')";
+                 searchQuery = "SELECT * FROM product WHERE idProvider in (SELECT idProvider FROM provider WHERE companyName like  '%" + t1 + "%')";
                  loadProducts.setSendQuery(searchQuery); 
               } else{
                   searchQuery = "Select * from product where "+searchItem+" like  '%" + t1 + "%'"; 
