@@ -109,7 +109,7 @@ public class Product {
     }
     
     public String DataDB(Connection connection){
-        String sendQuery = "SELECT categoryName FROM product_category WHERE idCategory=(SELECT idCategory FROM product WHERE name='" + name + "')";
+        String sendQuery = "SELECT categoryName FROM product_category WHERE idCategory=(SELECT idCategory FROM product WHERE code='" + code + "')";
         String allData = "";
         try(Statement statement = connection.createStatement();
             ResultSet resultSet= statement.executeQuery(sendQuery);){
@@ -120,7 +120,7 @@ public class Product {
                 e.printStackTrace();
                 return null;
             }
-       sendQuery= "SELECT companyName FROM provider WHERE idProvider=(SELECT idProvider FROM product WHERE name='"+name+"')";
+       sendQuery= "SELECT companyName FROM provider WHERE idProvider=(SELECT idProvider FROM product WHERE code='"+code+"')";
        try(Statement statement = connection.createStatement();
             ResultSet resultSet= statement.executeQuery(sendQuery);){
                     while(resultSet.next()){
@@ -132,4 +132,5 @@ public class Product {
             }
         return allData;
     }
+    
 }

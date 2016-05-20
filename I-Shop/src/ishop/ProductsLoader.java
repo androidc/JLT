@@ -8,8 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class ProductsLoader implements Loadable{
-    private Statement statement;
-    private ResultSet resultSet;
+//    private Statement statement;
+//    private ResultSet resultSet;
     
     private String sendQuery = "SELECT * FROM " + "product";
 
